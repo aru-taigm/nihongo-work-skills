@@ -17,7 +17,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from skilllib import SKILLS_DIR  # noqa: E402
 
 
+def _utf8_stdio() -> None:
+    """Windows の既定の文字コード（cp1252 など）でも日本語の出力でこけないようにする。"""
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+
+
 def main(argv: list[str] | None = None) -> int:
+    _utf8_stdio()
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("names", nargs="*", help="入れるスキル名（省略で全部）")
     ap.add_argument("--project", action="store_true", help="カレントの .claude/skills に入れる")

@@ -30,7 +30,15 @@ def updated(readme: str) -> str:
     return readme[: a + len(START)] + "\n" + render() + "\n" + readme[b:]
 
 
+def _utf8_stdio() -> None:
+    """Windows の既定の文字コード（cp1252 など）でも日本語の出力でこけないようにする。"""
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+
+
 def main(argv: list[str]) -> int:
+    _utf8_stdio()
     path = ROOT / "README.md"
     old = path.read_text(encoding="utf-8")
     new = updated(old)
