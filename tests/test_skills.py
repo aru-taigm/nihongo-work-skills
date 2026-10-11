@@ -14,7 +14,7 @@ import skilllib  # noqa: E402
 
 class SkillFilesTest(unittest.TestCase):
     def test_there_are_skills(self):
-        self.assertGreaterEqual(len(skilllib.load_all()), 20)
+        self.assertGreaterEqual(len(skilllib.load_all()), 40)
 
     def test_every_skill_is_valid(self):
         problems = []
